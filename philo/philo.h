@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 16:12:10 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/03/10 21:40:25 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/03/12 20:15:52 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,11 @@
 # include <pthread.h>
 # include <limits.h>
 
+# define SUCESS 1
+# define FAILURE 0
+
 typedef struct s_fa
 {
-	int				num;
 	int				diedd;
 }	t_fa;
 
@@ -39,12 +41,22 @@ typedef struct s_philo
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				num_to_eat;
-	int				died;
-	int				*death;
+	long long		t;
 }	t_philo;
 
 
 
-int		ft_atoi(const char *str);
+int			ft_atoi(const char *str);
+long long	get_time(void);
+void		thinking(int n, long long dif, t_philo *data);
+void		took_a_fork(int n, long long dif, t_philo *data);
+void		sleeping(int n, long long dif, t_philo *data);
+void		eat(int n, long long dif, t_philo *data);
+long long	rest_routine(long long t_ime, t_philo *data);
+long long	start_routine(long long t_ime, t_philo *data);
+void		sleep_thread(long long t_ime, long long n);
+void		finishing(t_philo *data, pthread_mutex_t *forks);
+void		initialize(pthread_mutex_t *forks, \
+								t_philo *data, char **av, pthread_mutex_t a);
 
 #endif

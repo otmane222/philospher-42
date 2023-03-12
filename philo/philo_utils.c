@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 19:26:53 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/03/05 19:27:02 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/03/12 20:05:11 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,4 +55,37 @@ int	ft_atoi(const char *str)
 		str++;
 	}
 	return (rtn_atoi(res, sign, str) * sign);
+}
+
+long long	rest_routine(long long t_ime, t_philo *data)
+{
+	long long	t_ime2;
+
+	pthread_mutex_unlock(data->left_fork);
+	pthread_mutex_unlock(data->right_fork);
+	t_ime2 = get_time();
+	sleeping(data->id, t_ime2 - t_ime, data);
+	usleep(data->time_to_sleep);
+	t_ime2 = get_time();
+	thinking(data->id, t_ime2 - t_ime, data);
+	usleep(data->time_to_sleep);
+	return (get_time());
+}
+
+long long	start_routine(long long t_ime, t_philo *data)
+{
+	long long	t_ime2;
+
+	if ((data->id % data->philo_num) == 0)
+		usleep(100);
+	pthread_mutex_lock(data->left_fork);
+	t_ime2 = get_time();
+	took_a_fork(data->id, t_ime2 - t_ime, data);
+	pthread_mutex_lock(data->right_fork);
+	t_ime2 = get_time();
+	took_a_fork(data->id, t_ime2 - t_ime, data);
+	t_ime2 = get_time();
+	eat(data->id, t_ime2 - t_ime, data);
+	usleep(data->time_to_eat);
+	return (t_ime2);
 }
