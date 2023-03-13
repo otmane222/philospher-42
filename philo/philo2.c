@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 09:00:41 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/03/12 20:16:44 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/03/13 03:27:32 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	khouta_b(long long t, long long t_ime2, t_philo *data)
 {
 	t_ime2 = get_time();
 	pthread_mutex_lock(data->print);
-	if ((t_ime2 - t) > (data->time_to_die / 1000))
+	if ((t_ime2 - t) > data->time_to_die)
 	{
 		if (data->fa->diedd == 1)
 		{
@@ -91,9 +91,9 @@ void	full_data(t_philo *data, char **av, int ac)
 	{
 		data[j].philo_num = i;
 		data[j].fa = fa;
-		data[j].time_to_die = ft_atoi(av[2]) * 1000;
-		data[j].time_to_eat = ft_atoi(av[3]) * 1000;
-		data[j].time_to_sleep = ft_atoi(av[4]) * 1000;
+		data[j].time_to_die = ft_atoi(av[2]);
+		data[j].time_to_eat = ft_atoi(av[3]);
+		data[j].time_to_sleep = ft_atoi(av[4]);
 		if (ac == 6)
 			data[j].num_to_eat = ft_atoi(av[5]);
 		else

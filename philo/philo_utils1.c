@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 19:06:14 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/03/12 19:06:24 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/03/13 03:25:47 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,5 +52,5 @@ long long	get_time(void)
 	gettimeofday (&time, NULL);
 	if (!timestart)
 		timestart = (time.tv_sec * 1000) + (time.tv_usec * 0.001);
-	return (((time.tv_sec * 1000) + (time.tv_usec * 0.001)) - timestart );
+	return (((time.tv_sec * 1000) + (time.tv_usec * 0.001)) - timestart);
 }

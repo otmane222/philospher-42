@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 19:26:53 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/03/12 20:05:11 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/03/13 03:25:55 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,10 +65,10 @@ long long	rest_routine(long long t_ime, t_philo *data)
 	pthread_mutex_unlock(data->right_fork);
 	t_ime2 = get_time();
 	sleeping(data->id, t_ime2 - t_ime, data);
-	usleep(data->time_to_sleep);
+	sleep_thread(data->time_to_sleep);
 	t_ime2 = get_time();
 	thinking(data->id, t_ime2 - t_ime, data);
-	usleep(data->time_to_sleep);
+	sleep_thread(data->time_to_sleep);
 	return (get_time());
 }
 
@@ -86,6 +86,6 @@ long long	start_routine(long long t_ime, t_philo *data)
 	took_a_fork(data->id, t_ime2 - t_ime, data);
 	t_ime2 = get_time();
 	eat(data->id, t_ime2 - t_ime, data);
-	usleep(data->time_to_eat);
+	sleep_thread(data->time_to_eat);
 	return (t_ime2);
 }

@@ -6,20 +6,20 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 19:45:45 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/03/12 20:16:00 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/03/13 03:25:32 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	sleep_thread(long long t_ime, long long n)
+void	sleep_thread(long long n)
 {
 	long long	t;
 
 	t = get_time();
-	while ((get_time() - n) - t)
+	while (get_time() - t < n)
 	{
-		usleep(200);
+		usleep(100);
 	}
 }
 

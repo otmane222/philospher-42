@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 16:12:10 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/03/12 20:15:52 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/03/13 03:11:31 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void		sleeping(int n, long long dif, t_philo *data);
 void		eat(int n, long long dif, t_philo *data);
 long long	rest_routine(long long t_ime, t_philo *data);
 long long	start_routine(long long t_ime, t_philo *data);
-void		sleep_thread(long long t_ime, long long n);
+void		sleep_thread(long long n);
 void		finishing(t_philo *data, pthread_mutex_t *forks);
 void		initialize(pthread_mutex_t *forks, \
 								t_philo *data, char **av, pthread_mutex_t a);
