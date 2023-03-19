@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 19:45:45 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/03/13 03:25:32 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/03/17 23:10:40 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,20 +19,19 @@ void	sleep_thread(long long n)
 	t = get_time();
 	while (get_time() - t < n)
 	{
-		usleep(100);
+		usleep(500);
 	}
 }
 
-void	finishing(t_philo *data, pthread_mutex_t *forks)
+void	finishing(t_philo *data, pthread_mutex_t *forks, char **av)
 {
 	int		i;
 	int		k;
 	int		j;
-	int		*res;
 
 	i = 0;
 	j = 0;
-	k = data[i].philo_num;
+	k = ft_atoi(av[1]);
 	while (i < k)
 	{
 		pthread_join(data[i].a_th, NULL);
@@ -54,7 +53,6 @@ void	initialize(pthread_mutex_t *forks, \
 
 	j = 0;
 	k = ft_atoi(av[1]);
-	pthread_mutex_init(forks, NULL);
 	pthread_mutex_init(&a, NULL);
 	while (j < k)
 	{
@@ -70,4 +68,19 @@ void	initialize(pthread_mutex_t *forks, \
 		data[j].right_fork = &forks[(j + 1) % k];
 		j++;
 	}
+}
+
+void	khouta_b(long long t, long long t_ime2, t_philo *data)
+{
+	t_ime2 = get_time();
+	pthread_mutex_lock(data->print);
+	if ((t_ime2 - t) > data->time_to_die && data->fa->diedd)
+	{
+		if (data->fa->diedd == 1)
+		{
+			printf("%lld		%d is died\n", t_ime2 - t, data->id);
+			data->fa->diedd = 0;
+		}
+	}
+	pthread_mutex_unlock(data->print);
 }

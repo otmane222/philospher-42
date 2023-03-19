@@ -1,30 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo2.c                                           :+:      :+:    :+:   */
+/*   philo.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 09:00:41 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/03/13 03:27:32 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/03/17 23:30:18 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	khouta_b(long long t, long long t_ime2, t_philo *data)
+void	helpful_call(t_philo *data, int *i)
 {
-	t_ime2 = get_time();
-	pthread_mutex_lock(data->print);
-	if ((t_ime2 - t) > data->time_to_die)
-	{
-		if (data->fa->diedd == 1)
-		{
-			printf("%lld		%d is died\n", t_ime2 - t, data->id);
-			data->fa->diedd = 0;
-		}
-	}
-	pthread_mutex_unlock(data->print);
+	if (data->num_to_eat == -1)
+		*i = -2;
+	else
+		*i = 0;
+	if (data->id % 2 == 0)
+		usleep(1000);
 }
 
 void	*routine(void *arg)
@@ -37,14 +32,11 @@ void	*routine(void *arg)
 	data = (t_philo *)arg;
 	t_ime = get_time();
 	t_ime2 = 0;
-	if (data->num_to_eat == -1)
-		i = -2;
-	else
-		i = 0;
+	helpful_call(data, &i);
 	while (i < data->num_to_eat)
 	{
 		data->t = start_routine(t_ime, data);
-		t_ime2 = rest_routine(t_ime, data);
+		data->t = rest_routine(t_ime, data);
 		khouta_b(data->t, t_ime2, data);
 		if (data->fa->diedd == 0)
 			return (0);
@@ -56,25 +48,16 @@ void	*routine(void *arg)
 	return (0);
 }
 
-int	check_arg(char **av)
+void	full_again(t_philo *data, char **av, int i, int ac)
 {
-	int		i;
-	int		j;
-
-	i = 0;
-	j = 1;
-	while (av[j])
-	{
-		i = 0;
-		while (av[j][i])
-		{
-			if (av[j][i] < '0' || av[j][i] > '9')
-				return (FAILURE);
-			i++;
-		}
-		j++;
-	}
-	return (SUCESS);
+	data->philo_num = i;
+	data->time_to_die = ft_atoi(av[2]);
+	data->time_to_eat = ft_atoi(av[3]);
+	data->time_to_sleep = ft_atoi(av[4]);
+	if (ac == 6)
+		data->num_to_eat = ft_atoi(av[5]);
+	else
+		data->num_to_eat = -1;
 }
 
 void	full_data(t_philo *data, char **av, int ac)
@@ -86,18 +69,19 @@ void	full_data(t_philo *data, char **av, int ac)
 	j = 0;
 	i = ft_atoi(av[1]);
 	fa = malloc(sizeof(t_fa));
+	if (!fa)
+		return ;
 	fa->diedd = 1;
+	if (i == 1)
+	{
+		philo_one(av);
+		data[j].fa = fa;
+		return ;
+	}
 	while (j < i)
 	{
-		data[j].philo_num = i;
+		full_again(&data[j], av, i, ac);
 		data[j].fa = fa;
-		data[j].time_to_die = ft_atoi(av[2]);
-		data[j].time_to_eat = ft_atoi(av[3]);
-		data[j].time_to_sleep = ft_atoi(av[4]);
-		if (ac == 6)
-			data[j].num_to_eat = ft_atoi(av[5]);
-		else
-			data[j].num_to_eat = -1;
 		if (pthread_create(&data[j].a_th, NULL, &routine, &data[j]) != 0)
 			printf("Error creating thread\n");
 		j++;
@@ -109,24 +93,24 @@ int	main(int ac, char **av)
 	t_philo			*data;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	forkk;
-	pthread_t		*a_th;
-	int				*i;
 
 	if (ac <= 4 || ac <= 3)
 		return (write(2, "Wrong number of arguments\n", 26), 0);
 	if (check_arg(av) == FAILURE)
 		return (write(2, "Enter a corrects numbers\n", 25), 0);
+	if (ft_atoi(av[1]) == 0)
+		return (1);
 	data = malloc(sizeof(t_philo) * ft_atoi(av[1]));
 	if (!data)
-		return (0);
+		return (1);
 	forks = malloc(sizeof(pthread_mutex_t) * ft_atoi(av[1]));
 	if (!forks)
-		return (0);
+		return (1);
+	pthread_mutex_init(&forkk, NULL);
 	initialize(forks, data, av, forkk);
 	full_data(data, av, ac);
-	finishing(data, forks);
-	free(data->fa);
-	free(data);
-	free(forks);
+	finishing(data, forks, av);
+	free_mem(data, forks);
+	pthread_mutex_destroy(&forkk);
 	return (0);
 }

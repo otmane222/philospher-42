@@ -1,10 +1,11 @@
-NAME = philo
+NAME = philo_bonus
 
-SRCS = philo_utils.c \
-	   philo_utils1.c \
-	   philo_utils2.c \
-	   philo.c \
-	   philo_utils3.c \
+SRCS = philo_utils_bonus.c \
+	   philo_utils1_bonus.c \
+	   philo_utils2_bonus.c \
+	   philo_bonus.c \
+	   parsing_bonus.c \
+
 
 OBJS = $(SRCS:.c=.o)
 
@@ -12,7 +13,7 @@ FLAGS = -Wall -Werror -Wextra
 
 CC = gcc
 
-all: $(NAME) philo.h
+all: $(NAME) philo_bonus.h
 
 $(NAME) : $(OBJS)
 	$(CC) $(FLAGS) $(OBJS) -o $@
